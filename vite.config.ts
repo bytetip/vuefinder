@@ -6,7 +6,11 @@ import svgLoader from 'vite-svg-loader'
 
 export default defineConfig({
     plugins: [
-        vue(),
+        vue({
+            script: {
+                defineModel: true
+            }
+        }),
         svgLoader(),
         copy({
             targets: [

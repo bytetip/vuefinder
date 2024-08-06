@@ -1,4 +1,4 @@
-import {onMounted, onUnmounted} from 'vue';
+import {onBeforeUnmount, onMounted, onUnmounted} from 'vue';
 import {FEATURES} from "../features.js";
 import ModalAbout from "../components/modals/ModalAbout.vue";
 import ModalDelete from "../components/modals/ModalDelete.vue";
@@ -73,7 +73,7 @@ export function useHotkeyActions(app) {
         app.root.addEventListener("keydown", handleKeyboardShortcuts);
     });
 
-    onUnmounted(() => {
+    onBeforeUnmount(() => {
         app.root.removeEventListener("keydown", handleKeyboardShortcuts);
     });
 }

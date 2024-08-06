@@ -1,4 +1,4 @@
-import {ref, onMounted, onUpdated, onUnmounted, nextTick} from 'vue';
+import {ref, onMounted, onUpdated, onUnmounted, nextTick, onBeforeUnmount} from 'vue';
 import DragSelect from 'dragselect';
 import {
     OverlayScrollbars,
@@ -62,8 +62,8 @@ export default function () {
         );
         updateSelection();
     });
-    
-    const updateSelection = () => { 
+
+    const updateSelection = () => {
         // update selection
         selectedItems.value = dragSelectInstance.getSelection().map((el) => JSON.parse(el.dataset.item));
         onSelectCallback.value(selectedItems.value);
@@ -103,12 +103,14 @@ export default function () {
             return;
         }
 
-        if (area.value.getBoundingClientRect().height < area.value.scrollHeight) {
+        if (area.value && area.value.getBoundingClientRect().height < area.value.scrollHeight) {
             scrollBar.value.style.height = area.value.scrollHeight + 'px';
             scrollBar.value.style.display = 'block';
         } else {
-            scrollBar.value.style.height = '100%';
-            scrollBar.value.style.display = 'none';
+            if (scrollBar.value) {
+                scrollBar.value.style.height = '100%';
+                scrollBar.value.style.display = 'none';
+            }
         }
     }
 
@@ -163,7 +165,7 @@ export default function () {
         dragSelectInstance.subscribe('DS:scroll', ({isDragging}) => isDragging || updateScrollBarPosition());
     });
 
-    onUnmounted(() => {
+    onBeforeUnmount(() => {
         if (dragSelectInstance) {
             dragSelectInstance.stop();
         }

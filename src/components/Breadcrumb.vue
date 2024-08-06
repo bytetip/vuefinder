@@ -28,21 +28,21 @@
     <div v-show="!app.fs.searchMode" @click.self="enterSearchMode" class="group vuefinder__breadcrumb__search-container">
       <div>
         <HomeSVG
-          @dragover="handleDragOver($event)"
-          @dragleave="handleDragLeave($event)"
-          @drop="handleDropZone($event, -1)"
-          @click="app.emitter.emit('vf-fetch', {params:{q: 'index', adapter: app.fs.adapter}})"/>
+            @dragover="handleDragOver($event)"
+            @dragleave="handleDragLeave($event)"
+            @drop="handleDropZone($event, -1)"
+            @click="app.emitter.emit('vf-fetch', {params:{q: 'index', adapter: app.fs.adapter}})"/>
       </div>
 
       <div class="vuefinder__breadcrumb__list">
         <div v-if="app.fs.hiddenBreadcrumbs.length" class="vuefinder__breadcrumb__hidden-list" v-click-outside="handleClickOutside">
           <div class="vuefinder__breadcrumb__separator">/</div>
           <div class="relative">
-            <span 
-            @dragenter="app.fs.toggleHiddenBreadcrumbs(true)"
-            @click="app.fs.toggleHiddenBreadcrumbs()"
-                   class="vuefinder__breadcrumb__hidden-toggle">
-              <DotsSVG class="vuefinder__breadcrumb__hidden-toggle-icon" />
+            <span
+                @dragenter="app.fs.toggleHiddenBreadcrumbs(true)"
+                @click="app.fs.toggleHiddenBreadcrumbs()"
+                class="vuefinder__breadcrumb__hidden-toggle">
+              <DotsSVG class="vuefinder__breadcrumb__hidden-toggle-icon"/>
             </span>
           </div>
         </div>
@@ -65,7 +65,7 @@
     </div>
     <div v-show="app.fs.searchMode" class="vuefinder__breadcrumb__search-mode">
       <div>
-        <SearchSVG />
+        <SearchSVG/>
       </div>
       <input
           ref="searchInput"
@@ -79,7 +79,7 @@
     </div>
 
     <div v-show="app.fs.showHiddenBreadcrumbs"
-        class="vuefinder__breadcrumb__hidden-dropdown">
+         class="vuefinder__breadcrumb__hidden-dropdown">
       <div
           v-for="(item, index) in app.fs.hiddenBreadcrumbs" :key="index"
           @dragover="handleDragOver($event)"
@@ -88,7 +88,7 @@
           @click="handleHiddenBreadcrumbsClick(item)"
           class="vuefinder__breadcrumb__hidden-item">
         <div class="vuefinder__breadcrumb__hidden-item-content">
-          <span><FolderSVG class="vuefinder__breadcrumb__hidden-item-icon" /></span> <span class="vuefinder__breadcrumb__hidden-item-text">{{ item.name}}</span>
+          <span><FolderSVG class="vuefinder__breadcrumb__hidden-item-icon"/></span> <span class="vuefinder__breadcrumb__hidden-item-text">{{ item.name }}</span>
         </div>
       </div>
     </div>
@@ -118,7 +118,7 @@ const {setStore} = app.storage;
 
 // dynamic shown items calculation for breadcrumbs
 const breadcrumbContainer = ref(null);
-const breadcrumbContainerWidth = useDebouncedRef(0,100);
+const breadcrumbContainerWidth = useDebouncedRef(0, 100);
 watch(breadcrumbContainerWidth, newQuery => {
   const children = breadcrumbContainer.value.children;
   let totalWidth = 0;
@@ -128,7 +128,7 @@ watch(breadcrumbContainerWidth, newQuery => {
 
   app.fs.limitBreadcrumbItems(max_shown_items);
   nextTick(() => {
-    for (let i = children.length-1; i >= 0; i--) {
+    for (let i = children.length - 1; i >= 0; i--) {
       if (totalWidth + children[i].offsetWidth > breadcrumbContainerWidth.value - 40) {
         break;
       }
@@ -144,7 +144,9 @@ watch(breadcrumbContainerWidth, newQuery => {
 });
 
 const updateContainerWidth = () => {
+  if (breadcrumbContainer.value) {
     breadcrumbContainerWidth.value = breadcrumbContainer.value.offsetWidth;
+  }
 }
 onMounted(() => {
   new ResizeObserver(updateContainerWidth).observe(breadcrumbContainer.value);
@@ -222,7 +224,7 @@ const handleDragLeave = (e) => {
 const handleRefresh = () => {
   exitSearchMode();
 
-  app.emitter.emit('vf-fetch',{params:{q: 'index', adapter: app.fs.adapter, path: app.fs.data.dirname}} );
+  app.emitter.emit('vf-fetch', {params: {q: 'index', adapter: app.fs.adapter, path: app.fs.data.dirname}});
 }
 
 const handleGoUp = () => {

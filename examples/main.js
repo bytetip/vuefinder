@@ -1,6 +1,24 @@
 import {createApp} from 'vue'
 import App from './App.vue'
 import VueFinder from '../src/index.js'
+import { createMemoryHistory, createRouter } from 'vue-router'
+
+import HomeView from './App.vue'
+import AboutView from './About.vue'
+import VueFinderExample from "./VueFinderExample.vue";
+import VueFinderExample2 from "./VueFinderExample2.vue";
+
+const routes = [
+    { path: '/home', component: HomeView },
+    { path: '/about', component: AboutView },
+    { path: '/VueFinderExample', component: VueFinderExample },
+    { path: '/VueFinderExample2', component: VueFinderExample2 },
+]
+
+const router = createRouter({
+    history: createMemoryHistory(),
+    routes,
+})
 
 const app = createApp(App);
 
@@ -24,4 +42,7 @@ app.use(VueFinder,
         }
     }
 )
+
+app.use(router)
+
 app.mount('#app')
